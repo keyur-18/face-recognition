@@ -1,6 +1,6 @@
 from deepface import DeepFace
 import os
-import pickle
+
 from scipy.spatial.distance import cosine
 import numpy as np
 from PIL import Image

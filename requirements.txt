@@ -17,5 +17,5 @@ mtcnn
 
 scikit-learn
 tqdm
-pickle
+
 deepface
