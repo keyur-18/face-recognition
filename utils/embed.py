@@ -18,19 +18,32 @@ def create_embeddings(img_path):
     return vec
 
 
-def save_embeddings():
+def save_embeddings(name):
     Embeddings = {}
     persons = "images"
-    for person in os.listdir(persons):
-        person_path = os.path.join(persons,person)
-        Embeddings[person] = []
-        for img in os.listdir(person_path):
-            img_path = os.path.join(person_path,img)
+    if "face_embeddings.json" in os.listdir():
+        Embeddings[name] = []
+        for img in os.listdir(f"images/{name}"):
+            img_path = f"images/{name}/{img}"
             print(img_path)
             embed = create_embeddings(img_path)
-            Embeddings[person].append(embed)
-    with open("face_embeddings.json","w")as f:
-        json.dump(Embeddings,f)
+            Embeddings[name].append(embed)
+            with open("face_embeddings.json","r") as f:
+                data = json.load(f)
+            data.update(Embeddings)
+        with open("face_embeddings.json","w") as f:
+            json.dump(Embeddings,f)
+    else :
+        for person in os.listdir(persons):
+            person_path = os.path.join(persons,person)
+            Embeddings[person] = []
+            for img in os.listdir(person_path):
+                img_path = os.path.join(person_path,img)
+                print(img_path)
+                embed = create_embeddings(img_path)
+                Embeddings[person].append(embed)
+        with open("face_embeddings.json","w")as f:
+            json.dump(Embeddings,f)
 
 
 def recognition(img):

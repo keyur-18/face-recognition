@@ -36,6 +36,6 @@ if st.button("save images"):
         for angle,img in images.items():
             image = Image.open(img)
             image.save(f"{user_dir}/{angle}.jpg")
-        save_embeddings()
+        save_embeddings(username)
         st.success("images saved")
         st.balloons()
