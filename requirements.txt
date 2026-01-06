@@ -4,7 +4,7 @@ opencv-python
 numpy
 scipy
 pillow
-
+opencv
 deepface
 tensorflow
 keras
