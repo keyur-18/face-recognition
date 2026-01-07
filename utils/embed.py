@@ -1,6 +1,6 @@
 from deepface import DeepFace
 import os
-
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from scipy.spatial.distance import cosine
 import numpy as np
 from PIL import Image
@@ -23,8 +23,8 @@ def save_embeddings(name):
     persons = "images"
     if "face_embeddings.json" in os.listdir():
         Embeddings[name] = []
-        for img in os.listdir(f"images/{name}"):
-            img_path = f"images/{name}/{img}"
+        for img in os.listdir(f"images/{name}/all"):
+            img_path = f"images/{name}/all/{img}"
             print(img_path)
             embed = create_embeddings(img_path)
             Embeddings[name].append(embed)
@@ -37,8 +37,8 @@ def save_embeddings(name):
         for person in os.listdir(persons):
             person_path = os.path.join(persons,person)
             Embeddings[person] = []
-            for img in os.listdir(person_path):
-                img_path = os.path.join(person_path,img)
+            for img in os.listdir(f"{person_path}/all"):
+                img_path = f"{person_path}/all/{img}"
                 print(img_path)
                 embed = create_embeddings(img_path)
                 Embeddings[person].append(embed)
@@ -67,6 +67,18 @@ def recognition(img):
     return best_person
 
 
+def augmentation(name):
+    datagen = ImageDataGenerator(rotation_range = 30,
+                                 shear_range = 0.2,
+                                 width_shift_range = 0.2,
+                                 height_shift_range = 0.2,
+                                 brightness_range = [0.5,1.5])
+    cnt = 0
+    for img in datagen.flow_from_directory(f"images/{name}",batch_size=1,save_to_dir = f"images/{name}/all"):
+        cnt = cnt+1
+        if cnt==10:
+            break
+    
 
     
 
