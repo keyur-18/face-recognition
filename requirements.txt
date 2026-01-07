@@ -4,7 +4,7 @@ opencv-python
 numpy
 scipy
 pillow
-opencv
+
 deepface
 keras
 ultralytics
@@ -13,6 +13,5 @@ torchvision
 mtcnn
 scikit-learn
 tqdm
-tensorflow.keras.preprocessing.image 
-torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 
-PIL
+cython
+# torchaudio --index-url https://download.pytorch.org/whl/cu121 
