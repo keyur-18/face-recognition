@@ -15,3 +15,5 @@ scikit-learn
 tqdm
 cython
 # torchaudio --index-url https://download.pytorch.org/whl/cu121 
+pytest
+pytest-mock

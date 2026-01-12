@@ -4,7 +4,6 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from scipy.spatial.distance import cosine
 import numpy as np
 from PIL import Image
-import streamlit as st
 import cv2
 import json
 path = "../images"
@@ -17,54 +16,65 @@ def create_embeddings(img_path):
     vec= res[0]['embedding']  
     return vec
 
+def load_db(path="face_embeddings.json"):
+    if not os.path.exists(path):
+        return {}
+    with open(path) as f:
+        return json.load(f)
+
+def save_db(db, path="face_embeddings.json"):
+    with open(path, "w") as f:
+        json.dump(db, f)
 
 def save_embeddings(name):
-    Embeddings = {}
-    persons = "images"
-    if "face_embeddings.json" in os.listdir():
-        Embeddings[name] = []
-        for img in os.listdir(f"images/{name}/all"):
-            img_path = f"images/{name}/all/{img}"
-            print(img_path)
-            embed = create_embeddings(img_path)
-            Embeddings[name].append(embed)
-            with open("face_embeddings.json","r") as f:
-                data = json.load(f)
-            data.update(Embeddings)
-        with open("face_embeddings.json","w") as f:
-            json.dump(Embeddings,f)
-    else :
-        for person in os.listdir(persons):
-            person_path = os.path.join(persons,person)
-            Embeddings[person] = []
-            for img in os.listdir(f"{person_path}/all"):
-                img_path = f"{person_path}/all/{img}"
-                print(img_path)
-                embed = create_embeddings(img_path)
-                Embeddings[person].append(embed)
-        with open("face_embeddings.json","w")as f:
-            json.dump(Embeddings,f)
+    data = load_db()
+    data.setdefault(name, [])
 
+    for img in os.listdir(f"images/{name}/all"):
+        img_path = f"images/{name}/all/{img}"
+        embed = create_embeddings(img_path)
+        data[name].append(embed)
+    save_db(data)
 
+def is_zero_vector(v, eps=1e-6):
+    return np.linalg.norm(v) < eps
+def safe_cosine(a, b):
+    if is_zero_vector(a) or is_zero_vector(b):
+        return 1.0
+    return cosine(a, b)
+def normalize(v):
+    norm = np.linalg.norm(v)
+    if norm == 0:
+        return v
+    return v /norm
+
+def identity(test_emb,embeddings,THRESHOLD=0.5,MARGIN = 0.05):
+    test_emb = normalize(test_emb)
+    if is_zero_vector(test_emb):
+        return "unknown"
+    best_person = "unknown"
+    min_dist = 1.0
+    second_best = 1.0
+    for person, embs in embeddings.items():
+        for known_emb in embs:
+            known_emb  =normalize(known_emb)
+            dist = safe_cosine(test_emb, known_emb)
+            if dist < min_dist:
+                second_best = min_dist
+                min_dist = dist
+                best_person = person
+            elif min_dist<second_best:
+                second_best = min_dist
+    if min_dist >THRESHOLD or (second_best-min_dist) <MARGIN:
+        return "unknown"
+    return best_person
 def recognition(img):
     pil_img = Image.open(img)
     img_arr = np.array(pil_img)
     img_bgr = cv2.cvtColor(img_arr,cv2.COLOR_RGB2BGR)
-    THRESHOLD = 0.5 
-    with open("face_embeddings.json", "r") as f:
-        embeddings = json.load(f)
+    embeddings = load_db()
     emb  = create_embeddings(img_bgr)
-    name = "unknown"
-    min_dist = 1.0
-    for person, embs in embeddings.items():
-        for known_emb in embs:
-            dist = cosine(emb, known_emb)
-            if dist < min_dist:
-                min_dist = dist
-                best_person = person
-    if min_dist >THRESHOLD:
-        best_person = "unknown"
-    return best_person
+    return identity(emb,embeddings=embeddings)
 
 
 def augmentation(name):
