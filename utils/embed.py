@@ -11,7 +11,7 @@ path = "../images"
 def create_embeddings(img_path):
     res = DeepFace.represent(img_path=img_path,
                              model_name="ArcFace",
-                            detector_backend="yolov8n",
+                            detector_backend="retinaface",
                             enforce_detection=False)
     vec= res[0]['embedding']  
     return vec
@@ -30,8 +30,8 @@ def save_embeddings(name):
     data = load_db()
     data.setdefault(name, [])
 
-    for img in os.listdir(f"images/{name}/all"):
-        img_path = f"images/{name}/all/{img}"
+    for img in os.listdir(f"images/{name}"):
+        img_path = f"images/{name}/{img}"
         embed = create_embeddings(img_path)
         data[name].append(embed)
     save_db(data)
@@ -77,17 +77,17 @@ def recognition(img):
     return identity(emb,embeddings=embeddings)
 
 
-def augmentation(name):
-    datagen = ImageDataGenerator(rotation_range = 30,
-                                 shear_range = 0.2,
-                                 width_shift_range = 0.2,
-                                 height_shift_range = 0.2,
-                                 brightness_range = [0.5,1.5])
-    cnt = 0
-    for img in datagen.flow_from_directory(f"images/{name}",batch_size=1,save_to_dir = f"images/{name}/all"):
-        cnt = cnt+1
-        if cnt==10:
-            break
+# def augmentation(name):
+#     datagen = ImageDataGenerator(rotation_range = 30,
+#                                  shear_range = 0.2,
+#                                  width_shift_range = 0.2,
+#                                  height_shift_range = 0.2,
+#                                  brightness_range = [0.5,1.5])
+#     cnt = 0
+#     for img in datagen.flow_from_directory(f"images/{name}",batch_size=1,save_to_dir = f"images/{name}"):
+#         cnt = cnt+1
+#         if cnt==10:
+#             break
     
 
     

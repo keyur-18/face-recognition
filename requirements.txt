@@ -1,19 +1,10 @@
-tensorflow
+
 streamlit
 opencv-python
 numpy
+tf-keras
 scipy
 pillow
-
 deepface
-keras
-ultralytics
-torch
-torchvision
-mtcnn
-scikit-learn
-tqdm
-cython
-# torchaudio --index-url https://download.pytorch.org/whl/cu121 
 pytest
 pytest-mock
