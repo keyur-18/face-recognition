@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import io
 from datetime import datetime
-from utils.embed import save_embeddings,augmentation
+from utils.embed import save_embeddings
 st.set_page_config(page_title="Face enroll",layout="centered")
 st.title("face enrollment")
 st.write("Capture **3 face images** from different angles")
