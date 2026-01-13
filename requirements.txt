@@ -1,17 +1,8 @@
-tensorflow
+
 streamlit
 opencv-python
 numpy
 scipy
 pillow
-
+tf-keras
 deepface
-keras
-ultralytics
-torch
-torchvision
-mtcnn
-scikit-learn
-tqdm
-cython
-# torchaudio --index-url https://download.pytorch.org/whl/cu121 

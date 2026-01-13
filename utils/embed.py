@@ -12,7 +12,7 @@ path = "../images"
 def create_embeddings(img_path):
     res = DeepFace.represent(img_path=img_path,
                              model_name="ArcFace",
-                            detector_backend="yolov8n",
+                            detector_backend="retinaface",
                             enforce_detection=False)
     vec= res[0]['embedding']  
     return vec
@@ -23,8 +23,8 @@ def save_embeddings(name):
     persons = "images"
     if "face_embeddings.json" in os.listdir():
         Embeddings[name] = []
-        for img in os.listdir(f"images/{name}/all"):
-            img_path = f"images/{name}/all/{img}"
+        for img in os.listdir(f"images/{name}"):
+            img_path = f"images/{name}/{img}"
             print(img_path)
             embed = create_embeddings(img_path)
             Embeddings[name].append(embed)
@@ -32,13 +32,13 @@ def save_embeddings(name):
                 data = json.load(f)
             data.update(Embeddings)
         with open("face_embeddings.json","w") as f:
-            json.dump(Embeddings,f)
+            json.dump(data,f)
     else :
         for person in os.listdir(persons):
             person_path = os.path.join(persons,person)
             Embeddings[person] = []
-            for img in os.listdir(f"{person_path}/all"):
-                img_path = f"{person_path}/all/{img}"
+            for img in os.listdir(f"{person_path}"):
+                img_path = f"{person_path}/{img}"
                 print(img_path)
                 embed = create_embeddings(img_path)
                 Embeddings[person].append(embed)
