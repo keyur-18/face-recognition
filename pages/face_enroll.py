@@ -3,7 +3,7 @@ from PIL import Image
 import os
 import io
 from datetime import datetime
-from utils.embed import save_embeddings,augmentation
+from utils.embed import save_embeddings
 st.set_page_config(page_title="Face enroll",layout="centered")
 st.title("face enrollment")
 st.write("Capture **3 face images** from different angles")
@@ -32,12 +32,12 @@ if st.button("save images"):
     else:
         user_dir = f"images/{username}"
         os.makedirs(user_dir,exist_ok=True)
-        path = f"images/{username}/all"
+        path = f"images/{username}"
         os.makedirs(path,exist_ok=True)
         for angle,img in images.items():
             image = Image.open(img)
-            image.save(f"{user_dir}/all/{angle}.jpg")
-        augmentation(username)
+            image.save(f"{user_dir}/{angle}.jpg")
+        # augmentation(username)
         save_embeddings(username)
         st.success("images saved")
         st.balloons()
