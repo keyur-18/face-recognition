@@ -1,0 +1,11 @@
+.git
+.gitignore
+faceenv
+images
+utils/embeddings.ipynb
+utils/recognize.ipynb
+test.json
+face_embeddings.pkl
+utils/__pycache__/
+face_embeddings.json
+.devcontainer/

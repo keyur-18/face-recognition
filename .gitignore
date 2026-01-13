@@ -2,3 +2,6 @@ images
 test.json
 faceenv
 face_embeddings.pkl
+utils/__pycache__/
+face_embeddings.json
+.devcontainer/

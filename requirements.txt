@@ -1,0 +1,11 @@
+
+streamlit
+opencv-python
+numpy
+tf-keras
+scipy
+pillow
+
+deepface
+pytest
+pytest-mock
