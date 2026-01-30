@@ -7,3 +7,4 @@ face_embeddings.json
 .devcontainer/
 settings.json
 __pycache__
+mlflow.db
