@@ -10,3 +10,4 @@ deepface
 pytest
 pytest-mock
 fastapi
+python-multipart
