@@ -1,11 +1,14 @@
 
 streamlit
-opencv-python
+
 numpy
 tf-keras
 scipy
 pillow
-
+uvicorn
 deepface
 pytest
 pytest-mock
+fastapi
+python-multipart
+uvicorn
