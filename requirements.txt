@@ -1,6 +1,6 @@
+opencv-python-headless
 
 streamlit
-opencv-python
 numpy
 tf-keras
 scipy
