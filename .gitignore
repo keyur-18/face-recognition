@@ -5,3 +5,6 @@ face_embeddings.pkl
 utils/__pycache__/
 face_embeddings.json
 .devcontainer/
+settings.json
+__pycache__
+mlflow.db
