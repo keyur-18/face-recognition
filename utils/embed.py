@@ -3,10 +3,7 @@ import os
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from scipy.spatial.distance import cosine
 import numpy as np
-from PIL import Image
-import cv2
 import json
-path = "../images"
 
 def create_embeddings(img_path):
     res = DeepFace.represent(img_path=img_path,
@@ -63,17 +60,17 @@ def identity(test_emb,embeddings,THRESHOLD=0.5,MARGIN = 0.05):
                 second_best = min_dist
                 min_dist = dist
                 best_person = person
-            elif min_dist<second_best:
-                second_best = min_dist
+            elif dist<second_best:
+                second_best = dist
+    print("FINAL min_dist:", min_dist)
+    print("FINAL second_best:", second_best)
+
     if min_dist >THRESHOLD or (second_best-min_dist) <MARGIN:
         return "unknown"
     return best_person
 def recognition(img):
-    pil_img = Image.open(img)
-    img_arr = np.array(pil_img)
-    img_bgr = cv2.cvtColor(img_arr,cv2.COLOR_RGB2BGR)
     embeddings = load_db()
-    emb  = create_embeddings(img_bgr)
+    emb  = create_embeddings(img)
     return identity(emb,embeddings=embeddings)
 
 
@@ -91,5 +88,14 @@ def recognition(img):
     
 
     
+###### this is for fastapi
 
-      
+def register_user(name,path):
+    data = load_db()
+    data.setdefault(name, [])
+
+    for img in os.listdir(path):
+        img_path = f"{path}/{img}"
+        embed = create_embeddings(img_path)
+        data[name].append(embed)
+    save_db(data)
