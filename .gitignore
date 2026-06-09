@@ -12,3 +12,5 @@ mlflow.db
 frontend/node_modules/
 frontend/.next/
 frontend/.env.local
+env
+model

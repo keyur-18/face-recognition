@@ -10,3 +10,5 @@ utils/__pycache__/
 face_embeddings.json
 .devcontainer/
 tests/
+env
+model
