@@ -8,3 +8,10 @@ face_embeddings.json
 settings.json
 __pycache__
 mlflow.db
+.env.local
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+env
+model
+4

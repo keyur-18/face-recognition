@@ -1,6 +1,9 @@
+
 import streamlit as st
+
 from utils.embed import save_embeddings
 from utils.enroll_utils import image_validation,save_images,creat_user_dir
+
 st.set_page_config(page_title="Face enroll",layout="centered")
 st.title("face enrollment")
 st.write("Capture **3 face images** from different angles")
@@ -12,7 +15,7 @@ if not username:
     st.stop()
 st.subheader("capure images")
 
-img_front = st.camera_input("Front face")
+img_front = st.camera_input("Front face")   
 img_left  = st.camera_input("Left Angle")
 img_right = st.camera_input("Right Angle")
 # print(type(img_front))
@@ -22,7 +25,7 @@ images = {
     "right":img_right
 }
 
-
+imgs = [img_front,img_left,img_right]
 if st.button("save images"):
     if not image_validation(images):
         st.error("please capure images")
@@ -31,6 +34,6 @@ if st.button("save images"):
         save_images(images,user_dir)
  
         # augmentation(username)
-        save_embeddings(username)
+        save_embeddings(username,imgs=imgs)
         st.success("images saved")
         st.balloons()
