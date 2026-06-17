@@ -7,3 +7,10 @@ face_embeddings.json
 .devcontainer/
 settings.json
 __pycache__
+.env.local
+4
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local
+env
+model
